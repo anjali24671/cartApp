@@ -10,12 +10,12 @@ function removeFromCart(id) {
 
 
         console.log("Removed from cart");
-        return true;
+        return false;
 
     } catch (e) {
         console.log("Couldn't remove from cart");
         console.error(e);
-        return false;
+        return true;
     }
 }
 
