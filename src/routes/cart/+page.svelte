@@ -1,7 +1,8 @@
 <script>
     import cart from "../../store/cartStore";
-    import Product from "../../components/product.svelte";
     import books from "../../data/books";
+    import CartProduct from "../../components/CartProduct.svelte";
+
 
     function getBookFromCart(){
         let book = []
@@ -26,7 +27,7 @@
         <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-8">
             {#if cartBooks.length > 0}
                 {#each cartBooks as book}
-                    <Product {book}/>
+                    <CartProduct {book} qty={true}/>
                 {/each}
             {:else}
                 <p>Your cart is empty</p>
