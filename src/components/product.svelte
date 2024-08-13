@@ -1,5 +1,21 @@
 <script>
+    import cart from "../store/cartStore"
+    import addToCart from '../utils/addToCart.js'
+    import removeFromCart from '../utils/removeFromCart.js'
+
 	export let book
+
+    let addedToCart = false
+
+    function cartOperation(id){
+        if (!addedToCart) addedToCart = addToCart(id)
+        else addedToCart = removeFromCart(id)
+        
+        console.log($cart)
+
+    }
+
+  
 </script>
 
 <section class="flex  w-[290px] rounded-md overflow-hidden justify-center h-[160px] border-2 hover:border-3 hover:border-orange-600">
@@ -13,7 +29,13 @@
             <div class="text-xs">{book.language}</div>
        </div>
        <div class="text-sm font-semibold text-orange-600 flex py-1 border-t border-gray-200 justify-center">
-            <button>Add To Cart</button>
+            <button on:click={()=>cartOperation(book.id)} class="active:text-orange-400">
+                {#if addedToCart}
+                    Remove
+                {:else}
+                    Add To Cart
+                {/if}
+            </button>
        </div>
     </div>
 </section>
