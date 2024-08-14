@@ -8,6 +8,7 @@
     let itemCount = 0;
     let cartBooks = [];
 
+    // Load book for the IDs in cart and calcualte the total amount
     function getBookFromCart() {
         const ids = Array.from($cart);
         cartBooks = ids.map(id => {
@@ -19,7 +20,7 @@
         return cartBooks;
     }
 
-    // Function to calculate the total price and item count
+    // Function to calculate the total price 
     function calculateTotal() {
         totalMRP = 0;
 
@@ -28,6 +29,7 @@
             
         });
     }
+
 
     function updateTotalMRP(event) {
         const { bookId, newQuantity } = event.detail;
@@ -54,17 +56,19 @@
 
 <main class="flex flex-col items-center justify-center px-7 py-6">
     <div class="flex flex-col">
-        <!-- Header Section -->
+        
+        <!-- TITLE -->
         {#if cartBooks.length > 0}
         <div class="mb-6 text-start">
             <h1 class="text-2xl font-semibold mb-1">My Cart</h1>
             <h3 class="text-lg">{cartBooks.length} {cartBooks.length === 1 ? `Book` : `Books`} in your cart</h3>
         </div>
         {/if}
-
-        <!-- Main Content Section -->
+        
+        <!-- MAIN SECTION -->
         <div class="flex flex-wrap justify-between gap-6">
-            <!-- Cart Items Section -->
+
+            <!-- PRODUCTS IN CART -->
             <section class="flex-1 max-w-2xl">
                 {#if cartBooks.length > 0}
                     <div class="space-y-6">
@@ -77,10 +81,12 @@
                 {/if}
             </section>
 
-            <!-- Total Amount Section -->
-            <div class="w-full max-w-xs flex-shrink-0">
-                <TotalAmount {totalMRP} {itemCount}/>
-            </div>
+            <!-- ORDER SUMMARY -->
+            {#if cartBooks.length > 0}
+                <div class="w-full max-w-xs flex-shrink-0">
+                    <TotalAmount {totalMRP} {itemCount}/>
+                </div>
+            {/if}
         </div>
     </div>
 </main>

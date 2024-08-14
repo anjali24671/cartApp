@@ -1,9 +1,9 @@
 <script>
     export let totalMRP = 0;
     export let itemCount = 0;
-    let shippingFees = 0;
+    let shippingFees = 20;
     let platformFees = 0;
-    let discountMRP = 0;
+    let discountMRP = 10;
 
     $: totalAmount = totalMRP - discountMRP + platformFees + shippingFees
 

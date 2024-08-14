@@ -6,9 +6,10 @@
     export let book;
 
     const dispatch = createEventDispatcher();
-    console.log(book.quantity)
     let currentQuantity = book.quantity;
 
+
+    // Change quantity of product in cart
     function quantityHandler(event) {
         const type = event.detail.typeOfChange;
 
@@ -21,13 +22,18 @@
         dispatch('changeQty', { bookId: book.id, newQuantity: currentQuantity });
     }
 
+    // Remove product from cart 
     function handleRemove() {
         removeFromCart(book.id);
         dispatch('changeQty', { bookId: book.id, newQuantity: 0 });
     }
 </script>
 
+
+<!-- PRODUCT -->
 <section class="flex p-3 overflow-hidden rounded-md h-[170px] border border-gray-400 relative">
+
+    <!-- REMOVE ITEM -->
     <div class="absolute top-3 right-3">
         <button on:click={handleRemove} class="text-gray-600 hover:text-red-600">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
@@ -36,15 +42,20 @@
         </button>
     </div>
 
+    <!-- IMAGE -->
     <div class="flex w-[180px]">
         <img class="object-cover rounded-[4px] h-full" alt={book.name} src={book.photoURL} />
     </div>
+
+    <!-- DESCRIPTION -->
     <div class="flex flex-col justify-between w-full">
         <div class="font-semibold flex flex-col gap-1">
             <h3>{book.name}</h3>
             <h4 class="text-xs">Paperback: <span class="font-bold"> ₹{book.price}</span></h4>
             <div class="text-xs">{book.language}</div>
         </div>
+
+        <!-- QTY CHANGER -->
         <div class="text-sm self-start font-semibold text-orange-600 flex py-1 justify-center gap-5">
             <Quantity on:quantityChange={quantityHandler} />
         </div>

@@ -11,7 +11,8 @@
     const dispatch = createEventDispatcher()
 
     onMount(()=>{
-        // check if product is in LS
+
+        // Check if this product is in Local Storage (added to cart)
         const cartItems = localStorage.getItem('cart')
         let cartItemsArr 
         if (cartItems){
@@ -22,50 +23,53 @@
         }
     })
 
-    
 
     function cartOperation(id){
 
+        // Add product to cart
         if (!addedToCart){ 
             addedToCart = addToCart(id)
             if(addedToCart){
                
                 dispatch('add', {"message": "added to cart", 'status':true})
             }else{
-                dispatch('added', {"message": "Couldn't add to the cart", "status": false})
-              
+                dispatch('added', {"message": "Couldn't add to the cart", "status": false})     
             }
         }
 
+        // remove product from cart
         else{ 
             addedToCart = removeFromCart(id)
             if(!addedToCart){
-                dispatch('remove', {"message": "removed from cart", 'status':true})
-               
+                dispatch('remove', {"message": "removed from cart", 'status':true})     
             }else{
-                dispatch('remove', {"message": "Couldn't remove from the cart", 'status':false})
-                
+                dispatch('remove', {"message": "Couldn't remove from the cart", 'status':false})       
             }
         }
-        
         console.log($cart)
-
     }
 
   
   
 </script>
 
+
+<!-- PRODUCT -->
 <section class="flex  w-[290px]  overflow-hidden justify-center h-[160px] border-2 hover:border-3 hover:border-orange-600">
+    <!-- IMAGE -->
     <div class="w-[200px]">
         <img class="object-cover h-full" alt={book.name} src={book.photoURL}/>
     </div>
+
+    <!-- DESCRIPTION -->
     <div class="w-full flex flex-col justify-between">
        <div class="px-3 font-semibold flex flex-col gap-1 pt-[5px]">
             <h3>{book.name}</h3>
             <h4 class="text-xs">Paperback: <span class="font-bold"> ₹{book.price}</span></h4>
             <div class="text-xs">{book.language}</div>
        </div>
+
+       <!-- ADD TO CART BUTTON -->
        <div class="text-sm font-semibold text-orange-600 flex py-1 border-t border-gray-200 justify-center">
             <button on:click={()=>cartOperation(book.id)} class="active:text-orange-400">
                 {#if addedToCart}

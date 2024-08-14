@@ -29,11 +29,16 @@
   });
 </script>
 
+
+<!-- NAVBAR SECTION -->
 <header class="flex items-center justify-between p-4 bg-white shadow-md fixed top-0 left-0 right-0 z-50">
+
+  <!-- LOGO  -->
   <div class="flex items-center">
       <a href="/" class="text-2xl font-bold text-gray-800">The Store</a>
   </div>
 
+  <!-- CART -->
   <div class="flex items-center space-x-4">
       <button class="text-gray-800 hover:text-black transition" on:click={() => goto('/cart')}>
           <a href="/cart" class="relative">

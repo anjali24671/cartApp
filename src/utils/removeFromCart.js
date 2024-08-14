@@ -2,13 +2,13 @@ import cart from "../store/cartStore";
 
 function removeFromCart(id) {
     try {
-        // Update the cart store
+        // remove product from cart store
         cart.update(items => {
             items.delete(id);
             return items;
         });
 
-        // remove item from localstorage as well
+        // remove product from localstorage as well
         if (typeof window !== undefined) {
             const cartItemArr = JSON.parse(localStorage.getItem('cart'))
 

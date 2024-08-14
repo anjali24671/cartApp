@@ -7,6 +7,7 @@ function addToCart(id) {
 
         // bypass SSR and only execute in broweser env
         if (typeof window !== 'undefined') {
+
             // get cart items from localStorage
             const prevCartArr = localStorage.getItem('cart')
             let cartItemArr
@@ -19,12 +20,11 @@ function addToCart(id) {
             
             const cartItemSet = new Set(cartItemArr)
         
-            // add the new book id
+            // add the new book id in set
             cartItemSet.add(id)
 
-            // put it in localStorage
+            // put set back in localStorage
             localStorage.setItem("cart", JSON.stringify(Array.from(cartItemSet)))
-            console.log("item added to LS : ", localStorage.getItem('cart'))
         }
 
         // Update the cart store
@@ -33,7 +33,6 @@ function addToCart(id) {
             return items;
         });
 
-        console.log("Added to cart");
         return true;
 
     } catch (e) {
