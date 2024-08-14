@@ -13,8 +13,15 @@
         }
         return book
     }
+   
+    let cartBooks = []
 
-    let cartBooks = getBookFromCart()
+    $: {
+        console.log('Current cart:', $cart);
+        console.log('cartBooks is updating');
+        cartBooks = getBookFromCart();
+    }
+
 
 </script>
 
@@ -25,9 +32,10 @@
     {/if}
     <div class="flex w-full items-start justify-start">
         <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-8">
+           
             {#if cartBooks.length > 0}
                 {#each cartBooks as book}
-                    <CartProduct {book} qty={true}/>
+                    <CartProduct {book}/>
                 {/each}
             {:else}
                 <p>Your cart is empty</p>
