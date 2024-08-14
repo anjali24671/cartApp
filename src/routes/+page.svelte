@@ -12,7 +12,7 @@
 
         setTimeout(()=>{
             showSucess = false
-        }, 2000)
+        }, 1000)
     }
 
     // shows red div when item is removed from cart
@@ -21,7 +21,7 @@
 
         setTimeout(()=>{
             showFailure = false
-        }, 2000)
+        }, 1000)
     }
 
     function itemAddHandler(event){
