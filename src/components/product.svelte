@@ -2,10 +2,25 @@
     import cart from "../store/cartStore"
     import addToCart from '../utils/addToCart.js'
     import removeFromCart from '../utils/removeFromCart.js'
+    import { onMount } from "svelte";
 
 	export let book
 
-    let addedToCart = false
+    let addedToCart
+
+    onMount(()=>{
+        // check if product is in LS
+        const cartItems = localStorage.getItem('cart')
+        let cartItemsArr 
+        if (cartItems){
+            cartItemsArr = JSON.parse(cartItems)
+
+            if (cartItemsArr.includes(book.id)) addedToCart = true
+            else addedToCart = false
+        }
+    })
+
+    
 
     function cartOperation(id){
         if (!addedToCart) addedToCart = addToCart(id)

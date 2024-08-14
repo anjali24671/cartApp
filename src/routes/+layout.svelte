@@ -1,9 +1,27 @@
 <script>
     import '../app.css';
     import {goto} from '$app/navigation'
+    import { onMount } from 'svelte';
     import cart from '../store/cartStore';
 
     let cartCount = 0
+
+    // Initialize the value of cart store from localstorage
+    onMount(()=>{
+      const prevLocalCart = localStorage.getItem('cart')
+      let localCartArr
+
+      if( prevLocalCart){
+        localCartArr = JSON.parse(localStorage.getItem('cart'))
+      }else{
+        localCartArr = []
+      }
+      
+      const localCartSet = new Set(localCartArr)
+
+      cart.set(localCartSet)
+      console.log("cart store is set to : ", $cart)
+    })
 
     cart.subscribe(value=>{
       cartCount = value.size

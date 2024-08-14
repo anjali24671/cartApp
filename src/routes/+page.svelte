@@ -1,6 +1,12 @@
 <script>
     import Product from "../components/Product.svelte";
     import books from "../data/books.js"
+    import { onMount } from "svelte";
+
+    onMount(()=>{
+      
+    })
+
 </script>
 
 
