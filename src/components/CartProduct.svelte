@@ -5,10 +5,31 @@
 
 
     export let book
+
+    let prevPrice = book.price
+    let currentPrice = book.price
+
+    function quantityHandler(event){
+        const qty = event.detail.qty
+        const type = event.detail.typeOfChange
+
+        console.log(qty)
+
+        if( type==='increment'){
+            currentPrice = currentPrice + prevPrice 
+        }
+        else{ 
+            currentPrice = currentPrice - prevPrice
+        }
+        
+        console.log(currentPrice)
+    }
+
     function handleRemove(){
         removeFromCart(book.id)
         console.log($cart)
     }
+    
 
 
 </script>
@@ -24,7 +45,7 @@
             <div class="text-xs">{book.language}</div>
        </div>
        <div class="text-sm self-start font-semibold text-orange-600 flex py-1 justify-center gap-5">
-           <Quantity/>
+           <Quantity on:quantityChange={quantityHandler}/>
        </div>
     </div>
     <div>
