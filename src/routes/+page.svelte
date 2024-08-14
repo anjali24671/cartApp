@@ -3,6 +3,8 @@
     import books from "../data/books.js"
     import { fade } from 'svelte/transition';
 
+    let loadingCart = false;
+
     let showSucess = false
     let showFailure = false
 
@@ -32,6 +34,9 @@
 
 </script>
 
+
+{#if !loadingCart}
+
 <div class="flex w-full relative items-center justify-center">
     {#if showSucess}
         <div class="p-3 rounded-xl bg-green-400  fixed  bottom-[20px]" transition:fade>
@@ -39,7 +44,7 @@
         </div>
     {:else if showFailure}
         <div class="p-3 rounded-xl bg-red-400  fixed  bottom-[20px]" transition:fade>
-            Couldn't add item to the cart!
+            item removed from the cart
         </div>
     {/if}
 </div>
@@ -51,5 +56,10 @@
         {/each}
     </div>
 </section>
+
+{:else}
+<div>loading Please wait</div>
+
+{/if}
 
 

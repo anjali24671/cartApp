@@ -32,7 +32,7 @@
                
                 dispatch('add', {"message": "added to cart", 'status':true})
             }else{
-                dispatch('add', {"message": "Couldn't add to the cart", "status": false})
+                dispatch('added', {"message": "Couldn't add to the cart", "status": false})
               
             }
         }
@@ -56,7 +56,7 @@
   
 </script>
 
-<section class="flex  w-[290px] rounded-md overflow-hidden justify-center h-[160px] border-2 hover:border-3 hover:border-orange-600">
+<section class="flex  w-[290px]  overflow-hidden justify-center h-[160px] border-2 hover:border-3 hover:border-orange-600">
     <div class="w-[200px]">
         <img class="object-cover h-full" alt={book.name} src={book.photoURL}/>
     </div>
