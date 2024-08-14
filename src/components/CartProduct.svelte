@@ -13,7 +13,7 @@
 
 </script>
 
-<section class="flex p-3  rounded-md overflow-hidden justify-center h-[170px]  hover:bg-gray-600">
+<section class="flex p-3 overflow-hidden justify-center h-[170px] hover:bg-gray-600 border border-gray-500 ">
     <div class="w-[180px]">
         <img class="object-cover rounded-[4px] h-full" alt={book.name} src={book.photoURL}/>
     </div>
@@ -24,8 +24,12 @@
             <div class="text-xs">{book.language}</div>
        </div>
        <div class="text-sm self-start font-semibold text-orange-600 flex py-1 justify-center gap-5">
-           <button on:click={handleRemove}>REMOVE</button>
            <Quantity/>
        </div>
+    </div>
+    <div>
+        <button on:click={handleRemove}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" class="itemContainer-base-closeIcon"><path fill="#000" fill-rule="evenodd" d="M9.031 8l6.756-6.756a.731.731 0 0 0 0-1.031.732.732 0 0 0-1.031 0L8 6.969 1.244.213a.732.732 0 0 0-1.031 0 .731.731 0 0 0 0 1.03L6.969 8 .213 14.756a.731.731 0 0 0 0 1.031.732.732 0 0 0 1.031 0L8 9.031l6.756 6.756a.732.732 0 0 0 1.031 0 .731.731 0 0 0 0-1.03L9.031 8z" style="--darkreader-inline-fill: #e8e6e3;" data-darkreader-inline-fill=""></path></svg>
+        </button>
     </div>
 </section>
