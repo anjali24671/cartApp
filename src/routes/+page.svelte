@@ -3,6 +3,14 @@
     import books from "../data/books.js"
     import { onMount } from "svelte";
 
+    function itemAddHandler(event){
+        console.log("hello", event.detail.message)
+    }
+
+    function itemRemoveHandler(event){
+        console.log("hello", event.detail.message)
+    }
+
     onMount(()=>{
       
     })
@@ -14,7 +22,7 @@
 <section class="flex overflow-hidden my-[50px] md:mx-[40px]  items-center justify-center md:justify-start ">
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-8">
         {#each books as book}
-            <Product {book}/>
+            <Product on:add={itemAddHandler} on:remove={itemRemoveHandler} {book}/>
         {/each}
     </div>
 </section>

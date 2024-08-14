@@ -3,10 +3,12 @@
     import addToCart from '../utils/addToCart.js'
     import removeFromCart from '../utils/removeFromCart.js'
     import { onMount } from "svelte";
+    import { createEventDispatcher } from "svelte";
 
 	export let book
 
     let addedToCart
+    const dispatch = createEventDispatcher()
 
     onMount(()=>{
         // check if product is in LS
@@ -23,8 +25,28 @@
     
 
     function cartOperation(id){
-        if (!addedToCart) addedToCart = addToCart(id)
-        else addedToCart = removeFromCart(id)
+
+        if (!addedToCart){ 
+            addedToCart = addToCart(id)
+            if(addedToCart){
+               
+                dispatch('add', {"message": "added to cart", 'status':true})
+            }else{
+                dispatch('add', {"message": "Couldn't add to the cart", "status": false})
+              
+            }
+        }
+
+        else{ 
+            addedToCart = removeFromCart(id)
+            if(!addedToCart){
+                dispatch('remove', {"message": "removed from cart", 'status':true})
+               
+            }else{
+                dispatch('remove', {"message": "Couldn't remove from the cart", 'status':false})
+                
+            }
+        }
         
         console.log($cart)
 
