@@ -72,7 +72,7 @@
             <section class="flex-1 max-w-2xl">
                 {#if cartBooks.length > 0}
                     <div class="space-y-6">
-                        {#each cartBooks as book}
+                        {#each cartBooks as book (book.id)}
                             <CartProduct on:changeQty={updateTotalMRP} {book}/>
                         {/each}
                     </div>
