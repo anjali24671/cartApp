@@ -2,10 +2,13 @@
     import Quantity from "./Quantity.svelte";
     import removeFromCart from '../utils/removeFromCart.js'
     import cart from '../store/cartStore'
+    import { createEventDispatcher } from "svelte";
+
 
 
     export let book
 
+    const dispatch = createEventDispatcher()
     let prevPrice = book.price
     let currentPrice = book.price
 
@@ -16,12 +19,13 @@
         console.log(qty)
 
         if( type==='increment'){
-            currentPrice = currentPrice + prevPrice 
+            if (currentPrice + prevPrice >= prevPrice) currentPrice = currentPrice + prevPrice 
         }
         else{ 
-            currentPrice = currentPrice - prevPrice
+            if (currentPrice - prevPrice >= prevPrice) currentPrice = currentPrice - prevPrice
         }
         
+        dispatch('changeQty', {"totalPrice":currentPrice})
         console.log(currentPrice)
     }
 

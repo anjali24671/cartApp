@@ -4,15 +4,26 @@
     import CartProduct from "../../components/CartProduct.svelte";
     import TotalAmount from "../../components/TotalAmount.svelte";
 
+    let totalMRP = 0
+    let itemCount = 0
 
     function getBookFromCart(){
         let book = []
         let ids = Array.from($cart)
 
         for (let id of ids){
-            book.push(books.filter(book=> book.id===id)[0])
+            const tempBook = books.filter(book=> book.id===id)[0]
+            book.push(tempBook)
+            totalMRP += tempBook.price
         }
+        itemCount = book.length
+        console.log(totalMRP)
+        console.log(itemCount)
         return book
+    }
+
+    function updateTotalMRP(event){
+        totalMRP = event.detail.totalPrice
     }
    
     let cartBooks = []
@@ -37,7 +48,7 @@
             
                 {#if cartBooks.length > 0}
                     {#each cartBooks as book}
-                        <CartProduct {book}/>
+                        <CartProduct on:changeQty={updateTotalMRP} {book}/>
                     {/each}
                 {:else}
                     <p>Your cart is empty</p>
@@ -46,7 +57,7 @@
         </div>
 
     </div>
-    <TotalAmount/>
+    <TotalAmount {totalMRP} {itemCount}/>
    
 </main>
 
