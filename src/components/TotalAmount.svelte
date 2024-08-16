@@ -1,11 +1,37 @@
 <script>
+	import Page from "../routes/cart/+page.svelte";
+    import coupons from '../data/discountCoupon'
+
     export let totalMRP = 0;
     export let itemCount = 0;
     let shippingFees = 20;
     let platformFees = 0;
     let discountMRP = 10;
+    let coupon
+    $:couponDiscount = 0
+    $:couponError = false
 
-    $: totalAmount = totalMRP - discountMRP + platformFees + shippingFees
+    $: totalAmount = totalMRP - discountMRP + platformFees + shippingFees - couponDiscount
+ 
+
+    console.log(coupons)
+
+    function applyCoupon(){
+       const couponValue = coupon.value
+
+       if (coupons.hasOwnProperty(couponValue)){
+        couponError = false
+        console.log('found a match')
+        couponDiscount = coupons[couponValue]
+       }
+       else{
+        couponError = true
+        couponDiscount = 0
+        console.log('coupon not found')
+       }
+       
+       
+    }
 
 
 </script>
@@ -32,6 +58,22 @@
                 ₹{shippingFees}
             {/if}
         </p>
+    </div>
+    <!-- DISCOUNT COUPON -->
+    <div class="flex items-end gap-2 items-center my-1 ">
+        <input bind:this={coupon} placeholder="DISCOUNT COUPON" class="text-sm p-2 accent-orange-200 bg-orange-100 w-full font-medium text-gray-800">
+        <button on:click={applyCoupon} class="bg-orange-400 text-white rounded-sm font-semibold py-1 px-2">Apply</button>
+    </div>
+
+    <div class="flex flex-col mb-2">
+        {#if couponDiscount}
+            <div class="flex justify-between my-2 items-center">
+                <p class="text-sm text-gray-600">Coupon Discount</p><p class="text-sm font-medium text-gray-800">-₹{couponDiscount}</p>
+            </div>
+        {/if}
+        {#if couponError}
+            <p class="text-xs text-red-600">Invalid Coupon</p>
+        {/if}
     </div>
     <hr class="border-gray-300 mb-4">
     <div class="flex justify-between items-center mb-6">
