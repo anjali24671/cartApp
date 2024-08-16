@@ -4,9 +4,18 @@ import Cart from '$lib/models/Cart'
 export async function POST({ request }) {
    
     try {
+        const data = await request.json()
+        const ids = data.ids
+        const user_id = data.user_id
+        
+        await connect()
 
+        const userCartRes = await Cart.findOne({user_id:'387e7a90-ba56-4221-8a3d-f683c69e1b66'})
+        const mergedCart = [...new Set([...ids, ...userCartRes.cart_items])];
+        const mergeCartRes = await Cart.updateOne({ user_id, cart_items: mergedCart })
+        
         return new Response(JSON.stringify(
-            { success: true, message:'hello' }
+            { success: true, message:mergeCartRes }
         ))
     } catch (e) {
         return new Response(JSON.stringify(

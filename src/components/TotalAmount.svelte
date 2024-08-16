@@ -1,6 +1,12 @@
 <script>
-	import Page from "../routes/cart/+page.svelte";
+	import {goto} from '$app/navigation'
     import coupons from '../data/discountCoupon'
+    import cart from '../store/cartStore'
+
+    import { PUBLIC_USERFRONT_ACCOUNT_ID } from '$env/static/public';
+    import Userfront from '@userfront/toolkit/web-components';
+    Userfront.init(PUBLIC_USERFRONT_ACCOUNT_ID);
+    const { user } = Userfront;
 
     export let totalMRP = 0;
     export let itemCount = 0;
@@ -31,6 +37,33 @@
        }
        
        
+    }
+    
+    // Merge the local storage cart and user's cart
+    async function merge(){
+        const ids = Array.from($cart);
+
+        // If user is logged in
+        if(user.email){
+            const res = await fetch('api/cart', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ids, 'user_id': user.userUuid}),
+            })
+
+            const data = await res.json()
+            console.log(data)
+        }
+
+        // If user is not logged in
+        else{
+            goto('/signup')
+        }
+        
+        
+        
     }
 
 
@@ -79,5 +112,5 @@
     <div class="flex justify-between items-center mb-6">
         <p class="text-lg font-semibold text-gray-700">Total Amount</p><p class="text-lg font-semibold text-gray-800">₹{totalAmount}</p>
     </div>
-    <button class="w-full py-2 text-white bg-orange-500 hover:bg-orange-600 rounded-lg font-semibold transition duration-200 ease-in-out">Place Order</button>
+    <button on:click={merge} class="w-full py-2 text-white bg-orange-500 hover:bg-orange-600 rounded-lg font-semibold transition duration-200 ease-in-out">Place Order</button>
 </section>
