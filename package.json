@@ -28,5 +28,9 @@
 		"userfront-svelte": "^0.0.2",
 		"vite": "^5.0.3"
 	},
-	"type": "module"
+	"type": "module",
+	"dependencies": {
+		"jose": "^5.6.3",
+		"mongoose": "^8.5.3"
+	}
 }
