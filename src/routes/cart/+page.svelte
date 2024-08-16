@@ -54,26 +54,28 @@
     }
 </script>
 
-<main class="flex flex-col items-center justify-center px-7 py-6">
-    <div class="flex flex-col">
+<main class="flex flex-col items-center px-6 py-2">
+    <div class="flex flex-col md:w-[70%] ">
         
         <!-- TITLE -->
         {#if cartBooks.length > 0}
         <div class="mb-6 text-start">
             <h1 class="text-2xl font-semibold mb-1">My Cart</h1>
-            <h3 class="text-lg">{cartBooks.length} {cartBooks.length === 1 ? `Book` : `Books`} in your cart</h3>
+            <h3 class="text-md">{cartBooks.length} {cartBooks.length === 1 ? `Book` : `Books`} in your cart</h3>
         </div>
         {/if}
         
         <!-- MAIN SECTION -->
-        <div class="flex flex-wrap justify-between gap-6">
+        <div class="flex flex-col lg:flex-row items-center lg:items-start justify-between gap-6">
 
             <!-- PRODUCTS IN CART -->
-            <section class="flex-1 max-w-2xl">
+            <section class="flex-1 w-full">
                 {#if cartBooks.length > 0}
-                    <div class="space-y-6">
+                    <div class="space-y-4">
                         {#each cartBooks as book (book.id)}
+                            <hr>
                             <CartProduct on:changeQty={updateTotalMRP} {book}/>
+                          
                         {/each}
                     </div>
                 {:else}
@@ -83,7 +85,7 @@
 
             <!-- ORDER SUMMARY -->
             {#if cartBooks.length > 0}
-                <div class="w-full max-w-xs flex-shrink-0">
+                <div class="w-full  max-w-xs flex-shrink-0">
                     <TotalAmount {totalMRP} {itemCount}/>
                 </div>
             {/if}

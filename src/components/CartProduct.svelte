@@ -31,10 +31,42 @@
 
 
 <!-- PRODUCT -->
-<section class="flex p-3 overflow-hidden rounded-md h-[170px] border border-gray-400 relative">
+<section class="flex p-1 overflow-hidden h-[120px] w-full  relative">
 
-    <!-- REMOVE ITEM -->
-    <div class="absolute top-3 right-3">
+
+
+    <!-- IMAGE -->
+    <div class="flex w-[110px] mr-[10px] sm:mr-[0px]">
+        <img class="object-cover rounded-[4px] h-full" alt={book.name} src={book.photoURL} />
+    </div>
+
+    <!-- DESCRIPTION -->
+    <div class="flex flex-col sm:flex-row items-start sm:items-center pr-3 justify-between w-full">
+        <div class="font-semibold w-[200px] flex flex-col gap-1">
+            <h3>{book.name}</h3>
+            <h4 class="text-xs">Paperback: <span class="font-bold"> ₹{book.price}</span></h4>
+            <div class="text-xs">{book.language}</div>
+        </div>
+
+        <!-- QTY CHANGER -->
+        <div class="text-sm font-semibold flex py-1 justify-center gap-5">
+            <Quantity on:quantityChange={quantityHandler} />
+        </div>
+
+            
+        <!-- REMOVE ITEM FOR BIG SCREEN -->
+        <div class="sm:block hidden ">
+            <button on:click={handleRemove} class="text-gray-600 hover:text-red-600">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+                    <path fill="#000" fill-rule="evenodd" d="M9.031 8l6.756-6.756a.731.731 0 0 0 0-1.031.732.732 0 0 0-1.031 0L8 6.969 1.244.213a.732.732 0 0 0-1.031 0 .731.731 0 0 0 0 1.03L6.969 8 .213 14.756a.731.731 0 0 0 0 1.031.732.732 0 0 0 1.031 0L8 9.031l6.756 6.756a.732.732 0 0 0 1.031 0 .731.731 0 0 0 0-1.03L9.031 8z"/>
+                </svg>
+            </button>
+        </div>
+
+    </div>
+
+    <!-- REMOVE ITEM FOR SMALL SCREEN -->
+    <div class="sm:hidden ">
         <button on:click={handleRemove} class="text-gray-600 hover:text-red-600">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
                 <path fill="#000" fill-rule="evenodd" d="M9.031 8l6.756-6.756a.731.731 0 0 0 0-1.031.732.732 0 0 0-1.031 0L8 6.969 1.244.213a.732.732 0 0 0-1.031 0 .731.731 0 0 0 0 1.03L6.969 8 .213 14.756a.731.731 0 0 0 0 1.031.732.732 0 0 0 1.031 0L8 9.031l6.756 6.756a.732.732 0 0 0 1.031 0 .731.731 0 0 0 0-1.03L9.031 8z"/>
@@ -42,22 +74,5 @@
         </button>
     </div>
 
-    <!-- IMAGE -->
-    <div class="flex w-[180px]">
-        <img class="object-cover rounded-[4px] h-full" alt={book.name} src={book.photoURL} />
-    </div>
 
-    <!-- DESCRIPTION -->
-    <div class="flex flex-col justify-between w-full">
-        <div class="font-semibold flex flex-col gap-1">
-            <h3>{book.name}</h3>
-            <h4 class="text-xs">Paperback: <span class="font-bold"> ₹{book.price}</span></h4>
-            <div class="text-xs">{book.language}</div>
-        </div>
-
-        <!-- QTY CHANGER -->
-        <div class="text-sm self-start font-semibold text-orange-600 flex py-1 justify-center gap-5">
-            <Quantity on:quantityChange={quantityHandler} />
-        </div>
-    </div>
 </section>

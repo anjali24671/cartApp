@@ -55,23 +55,23 @@
 
 
 <!-- PRODUCT -->
-<section class="flex  w-[290px]  overflow-hidden justify-center h-[160px] border-2 hover:border-3 hover:border-orange-600">
+<section class="flex gap-3 w-[290px] p-2 border hover:bg-gray-100 rounded-sm items-start">
     <!-- IMAGE -->
-    <div class="w-[200px]">
-        <img class="object-cover h-full" alt={book.name} src={book.photoURL}/>
+    <div class="w-[70%]">
+        <img class="object-contain rounded-lg" alt={book.name} src={book.photoURL}/>
     </div>
 
     <!-- DESCRIPTION -->
-    <div class="w-full flex flex-col justify-between">
-       <div class="px-3 font-semibold flex flex-col gap-1 pt-[5px]">
-            <h3>{book.name}</h3>
-            <h4 class="text-xs">Paperback: <span class="font-bold"> ₹{book.price}</span></h4>
-            <div class="text-xs">{book.language}</div>
+    <div class="flex h-full flex-col justify-between items-start w-full">
+       <div class="flex flex-col gap-1 items-start">
+            <h3 class="font-bold">{book.name}</h3>
+            <h4 class="text-xs">Paperback: <span class="font-bold"> ₹{book.price}</span></h4>  
+            <span class="text-xs bg-gray-300 px-1 text-start">{book.language}</span>  
        </div>
 
        <!-- ADD TO CART BUTTON -->
-       <div class="text-sm font-semibold text-orange-600 flex py-1 border-t border-gray-200 justify-center">
-            <button on:click={()=>cartOperation(book.id)} class="active:text-orange-400">
+       <div class="w-full text-center border-t  ">
+            <button on:click={()=>cartOperation(book.id)} class=" text-sm font-semibold text-orange-600 hover:text-orange-500 active:orange-400">
                 {#if addedToCart}
                     Remove
                 {:else}
