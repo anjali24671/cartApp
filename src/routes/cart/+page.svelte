@@ -18,9 +18,12 @@
     // Load books and calculate the total amount initially
     async function getBookFromCart() {
         let ids = Array.from($cart);
+        console.log("entered getBookFromCart")
+        
 
         // if the user is logged in, also get the database's cart items
         if (user.email) {
+            console.log("user emial: ", user.email)
             try {
                 const response = await fetch(`/api/cart?user_id=${user.userUuid}`);
                 const userCartRes = await response.json();
@@ -33,6 +36,7 @@
 
         // Use a Set to ensure unique IDs
         const uniqueIds = Array.from(new Set(ids));
+        console.log("uniq ids : ", uniqueIds)
 
         // Populate cartBooks with the unique books found in uniqueIds
         cartBooks = uniqueIds.map(id => {
@@ -40,13 +44,17 @@
             return { ...book, quantity: 1 }; // default quantity is 1
         });
 
+        console.log("cart books : ", cartBooks)
+
         calculateTotal(); // Calculate the total amount after updating cartBooks
+        console.log("done")
         loading = false; // Ensure loading is set to false after everything is done
         console.log('Loading after setting false:', loading); // Debugging line
     }
 
     // Function to calculate the total price of products according to their quantities
     function calculateTotal() {
+        console.log("calculating total")
         totalMRP = 0;
         cartBooks.forEach(book => {
             totalMRP += book.price * book.quantity;
