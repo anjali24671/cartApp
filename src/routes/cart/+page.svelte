@@ -71,7 +71,7 @@
     }
 
     // Use the reactive statement to call getBookFromCart when the cart changes
-    $: if ($cart.length > 0 || user.email) {
+    $: {
         console.log('Cart or user state changed:', $cart, user.email);
         getBookFromCart(); 
     }
