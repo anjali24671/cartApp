@@ -1,5 +1,5 @@
 <script>
-    import Product from "../components/Product.svelte";
+    import Product from "../components/product.svelte";
     import books from "../data/books.js"
     import { fade } from 'svelte/transition';
 
