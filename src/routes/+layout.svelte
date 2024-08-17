@@ -15,12 +15,13 @@
 
     let cartCount = 0;
     let cartItems = [];
-    let loadingCart = false;
+    $:loadingCart = false;
 
 
 
     onMount(async () => {
 
+        loadingCart = true;
         // Get the products from localStorage 
         const prevLocalCart = localStorage.getItem('cart');
         let localCartArr;
@@ -31,24 +32,28 @@
             localCartArr = [];
         }
 
-        const localCartSet = new Set(localCartArr);
-       
-
-        // If the user is logged in, get the products from database and merge them with localStorage
-        if (user.email) {
-            loadingCart = true;
-            await serverToLocalCart(localCartSet);
-            loadingCart = false;
-        }
-
-        // Initialize the cart store with the products in localStorage (and Backend)
-        cart.set(localCartSet);
-
         // Subscribe to cart updates
         cart.subscribe(value => {
             cartItems = Array.from(value);
             cartCount = cartItems.length;
         });
+
+        const localCartSet = new Set(localCartArr);
+        cart.set(localCartSet);
+       
+
+        // If the user is logged in, get the products from database and merge them with localStorage
+        if (user.email) {
+            
+            await serverToLocalCart(localCartSet);
+            
+        }
+
+        // Initialize the cart store with the products in localStorage (and Backend)
+        cart.set(localCartSet);
+        loadingCart = false;
+
+
     });
 
     // function to merge server cart with local storage cart
@@ -66,6 +71,10 @@
 </script>
 
 
+
+{#if loadingCart}
+<h1>loading please wait...</h1>
+{:else}
 
 <!-- NAVBAR SECTION -->
 <header class="flex items-center justify-between p-4 bg-white shadow-md fixed top-0 left-0 right-0 z-50">
@@ -105,3 +114,5 @@
 <main class="pt-[80px]">
   <slot {loadingCart} />
 </main>
+
+{/if}

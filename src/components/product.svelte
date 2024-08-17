@@ -37,6 +37,13 @@
         if (!addedToCart){ 
             addedToCart = addToCart(id)
 
+
+            if(addedToCart){
+                dispatch('add', {"message": "added to cart", 'status':true})
+            }else{
+                dispatch('add', {"message": "Couldn't add to the cart", "status": false})     
+            }
+
             // if the user is logged in, add the product to database as well
             if(user.email){
                 const cartRes = await fetch('api/cart', {
@@ -47,16 +54,18 @@
                     body: JSON.stringify({'ids':[id], 'user_id': user.userUuid}),
                 })
             }
-            if(addedToCart){
-                dispatch('add', {"message": "added to cart", 'status':true})
-            }else{
-                dispatch('add', {"message": "Couldn't add to the cart", "status": false})     
-            }
         }
 
         // remove product from cart
         else{ 
             addedToCart = removeFromCart(id)
+
+
+            if(addedToCart && !cartRes.ok){
+                dispatch('remove', {"message": "Couldn't remove from the cart", 'status':false})  
+            }else{
+                dispatch('remove', {"message": "removed from cart", 'status':true})       
+            }
 
             // if the user is logged in, remove the product from database as well
             if(user.email){
@@ -69,11 +78,6 @@
                 })
             }
 
-            if(addedToCart && !cartRes.ok){
-                dispatch('remove', {"message": "Couldn't remove from the cart", 'status':false})  
-            }else{
-                dispatch('remove', {"message": "removed from cart", 'status':true})       
-            }
         }
     }
 

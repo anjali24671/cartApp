@@ -4,18 +4,18 @@
     import CartProduct from "../../components/CartProduct.svelte";
     import TotalAmount from "../../components/TotalAmount.svelte";
 
-
-    // // userfront
-    // import { PUBLIC_USERFRONT_ACCOUNT_ID } from '$env/static/public';
-    // import Userfront from '@userfront/toolkit/web-components';
-    // Userfront.init(PUBLIC_USERFRONT_ACCOUNT_ID);
+    // userfront
+    import { PUBLIC_USERFRONT_ACCOUNT_ID } from '$env/static/public';
+    import Userfront from '@userfront/toolkit/web-components';
+    Userfront.init(PUBLIC_USERFRONT_ACCOUNT_ID);
 
     const { user } = Userfront;
     let totalMRP = 0;
     let itemCount = 0;
     let cartBooks = [];
+    let loading = true; // Start with loading true
 
-    // Load book calculate the total amount initially
+    // Load books and calculate the total amount initially
     async function getBookFromCart() {
         let ids = Array.from($cart);
 
@@ -39,11 +39,13 @@
             const book = books.find(b => b.id === id);
             return { ...book, quantity: 1 }; // default quantity is 1
         });
+
         calculateTotal(); // Calculate the total amount after updating cartBooks
+        loading = false; // Ensure loading is set to false after everything is done
+        console.log('Loading after setting false:', loading); // Debugging line
     }
 
-
-    // Function to calculate the total price of products according to their qunatities
+    // Function to calculate the total price of products according to their quantities
     function calculateTotal() {
         totalMRP = 0;
         cartBooks.forEach(book => {
@@ -69,48 +71,51 @@
     }
 
     // Use the reactive statement to call getBookFromCart when the cart changes
-    $: {
-        console.log($cart);
+    $: if ($cart.length > 0 || user.email) {
+        console.log('Cart or user state changed:', $cart, user.email);
         getBookFromCart(); 
     }
 </script>
 
-
-<main class="flex flex-col items-center px-6 py-2">
-    <div class="flex flex-col md:w-[70%] ">
-        
-        <!-- TITLE -->
-        {#if cartBooks.length > 0}
-        <div class="mb-6 text-start">
-            <h1 class="text-2xl font-semibold mb-1">My Cart</h1>
-            <h3 class="text-md">{cartBooks.length} {cartBooks.length === 1 ? `Book` : `Books`} in your cart</h3>
-        </div>
-        {/if}
-        
-        <!-- MAIN SECTION -->
-        <div class="flex flex-col lg:flex-row items-center lg:items-start justify-between gap-6">
-
-            <!-- PRODUCTS IN CART -->
-            <section class="flex-1 w-full">
-                {#if cartBooks.length > 0}
-                    <div class="space-y-4">
-                        {#each cartBooks as book (book.id)}
-                            <hr>
-                            <CartProduct on:changeQty={updateTotalMRP} {book}/>
-                          
-                        {/each}
-                    </div>
-                {:else}
-                    <p class="text-center">Your cart is empty</p>
-                {/if}
-            </section>
-
-            <!-- ORDER SUMMARY -->
+{#if loading}
+    <h1>Loading, please wait...</h1>
+{:else}
+    <main class="flex flex-col items-center px-6 py-2">
+        <div class="flex flex-col md:w-[70%] ">
+            
+            <!-- TITLE -->
             {#if cartBooks.length > 0}
-                <div class="w-full  max-w-xs flex-shrink-0">
-                    <TotalAmount {totalMRP} {itemCount}/>
-                </div>
+            <div class="mb-6 text-start">
+                <h1 class="text-2xl font-semibold mb-1">My Cart</h1>
+                <h3 class="text-md">{cartBooks.length} {cartBooks.length === 1 ? `Book` : `Books`} in your cart</h3>
+            </div>
             {/if}
+            
+            <!-- MAIN SECTION -->
+            <div class="flex flex-col lg:flex-row items-center lg:items-start justify-between gap-6">
+
+                <!-- PRODUCTS IN CART -->
+                <section class="flex-1 w-full">
+                    {#if cartBooks.length > 0}
+                        <div class="space-y-4">
+                            {#each cartBooks as book (book.id)}
+                                <hr>
+                                <CartProduct on:changeQty={updateTotalMRP} {book}/>
+                              
+                            {/each}
+                        </div>
+                    {:else}
+                        <p class="text-center">Your cart is empty</p>
+                    {/if}
+                </section>
+
+                <!-- ORDER SUMMARY -->
+                {#if cartBooks.length > 0}
+                    <div class="w-full  max-w-xs flex-shrink-0">
+                        <TotalAmount {totalMRP} {itemCount}/>
+                    </div>
+                {/if}
+            </div>
         </div>
-    </div>
-</main>
+    </main>
+{/if}

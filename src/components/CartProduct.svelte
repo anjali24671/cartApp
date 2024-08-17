@@ -25,6 +25,7 @@
     // Remove product from cart 
     async function handleRemove() {
         removeFromCart(book.id);
+        dispatch('changeQty', { bookId: book.id, newQuantity: 0 });
 
          // if the user is logged in, remove the product from database as well
         if(user.email){
@@ -38,7 +39,7 @@
             })
         }
 
-        dispatch('changeQty', { bookId: book.id, newQuantity: 0 });
+        
     }
 </script>
 
