@@ -43,7 +43,7 @@
     async function merge(){
         const ids = Array.from($cart);
 
-        // If user is logged in
+        // If user is logged in merge the local storage to user cart
         if(user.email){
             const res = await fetch('api/cart', {
                 method: 'POST',
@@ -52,6 +52,8 @@
                 },
                 body: JSON.stringify({ids, 'user_id': user.userUuid}),
             })
+
+            // merge the user cart to localstorage
 
             const data = await res.json()
             console.log(data)

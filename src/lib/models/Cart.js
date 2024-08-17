@@ -7,7 +7,8 @@ const CartSchema = new mongoose.Schema({
         unique: true
     },
     cart_items: {
-        type: [{type:String, unique:true}],
+        type: [{ type: Number}],
+        default:[],
         required: true
     }
 })

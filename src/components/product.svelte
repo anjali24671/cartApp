@@ -5,6 +5,13 @@
     import { onMount } from "svelte";
     import { createEventDispatcher } from "svelte";
 
+    // userfront
+    import { PUBLIC_USERFRONT_ACCOUNT_ID } from '$env/static/public';
+    import Userfront from '@userfront/toolkit/web-components';
+    Userfront.init(PUBLIC_USERFRONT_ACCOUNT_ID);
+
+    const { user } = Userfront;
+
 	export let book
 
     let addedToCart
@@ -24,11 +31,27 @@
     })
 
 
-    function cartOperation(id){
+    async function cartOperation(id){
 
         // Add product to cart
         if (!addedToCart){ 
             addedToCart = addToCart(id)
+
+            console.log(user.email)
+
+            // if the user is logged in, add the product to database as well
+            if(user.email){
+                console.log('hello')
+                const cartRes = await fetch('api/cart', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    
+                    body: JSON.stringify({'ids':[id], 'user_id': user.userUuid}),
+                })
+
+            }
             if(addedToCart){
                
                 dispatch('add', {"message": "added to cart", 'status':true})
@@ -40,6 +63,20 @@
         // remove product from cart
         else{ 
             addedToCart = removeFromCart(id)
+
+            // if the user is logged in, remove the product to database as well
+            if(user.email){
+                console.log('hello')
+                const cartRes = await fetch('api/cart', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({'ids':id, 'user_id': user.userUuid, 'operation':'remove'}),
+                })
+
+            }
+
             if(!addedToCart){
                 dispatch('remove', {"message": "removed from cart", 'status':true})     
             }else{
