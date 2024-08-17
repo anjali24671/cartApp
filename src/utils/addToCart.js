@@ -36,7 +36,6 @@ function addToCart(id) {
         return true;
 
     } catch (e) {
-        console.log("Couldn't add to cart");
         console.error(e);
         return false;
     }

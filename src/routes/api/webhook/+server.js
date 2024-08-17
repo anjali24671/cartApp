@@ -12,7 +12,6 @@ export async function POST({ request }) {
         await connect()
         
         const userCartResponse = await Cart.create({ user_id: data.record.userUuid })
-        console.log(userCartResponse)
         
         return new Response(JSON.stringify(
             { status: 200, userCartResponse }

@@ -39,7 +39,6 @@
 
             // if the user is logged in, add the product to database as well
             if(user.email){
-                console.log('hello')
                 const cartRes = await fetch('api/cart', {
                     method: 'POST',
                     headers: {

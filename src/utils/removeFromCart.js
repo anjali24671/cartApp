@@ -17,16 +17,12 @@ function removeFromCart(id) {
             cartItemSet.delete(id)
 
             localStorage.setItem('cart', JSON.stringify(Array.from(cartItemSet)))
-            console.log("item removed from LS : ", localStorage.getItem('cart'))
 
         }
 
-
-        console.log("Removed from cart");
         return false;
 
     } catch (e) {
-        console.log("Couldn't remove from cart");
         console.error(e);
         return true;
     }

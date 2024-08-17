@@ -18,12 +18,8 @@ export async function POST({ request }) {
         // If operation is 'remove', filter out the items
         if (operation === 'remove') {
 
-            console.log(userCartRes.cart_items)
 
             const filteredCartItems = userCartRes.cart_items.filter(item => !ids.includes(item));
-            console.log("ids to be removed : ", ids)
-            console.log("before: ", userCartRes.cart_items)
-            console.log("after : ", filteredCartItems)
 
             updatedCart = await Cart.updateOne(
                 { user_id },

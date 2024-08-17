@@ -56,7 +56,6 @@
         try {
             const response = await fetch(`api/cart?user_id=${user.userUuid}`);
             const data = await response.json();
-            console.log("Fetched user cart:", data);
 
             // Merge the server cart with the local cart
             data.forEach(item => localCartSet.add(item));

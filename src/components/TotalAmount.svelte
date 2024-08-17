@@ -20,20 +20,17 @@
     $: totalAmount = totalMRP - discountMRP + platformFees + shippingFees - couponDiscount
  
 
-    console.log(coupons)
 
     function applyCoupon(){
        const couponValue = coupon.value
 
        if (coupons.hasOwnProperty(couponValue)){
         couponError = false
-        console.log('found a match')
         couponDiscount = coupons[couponValue]
        }
        else{
         couponError = true
         couponDiscount = 0
-        console.log('coupon not found')
        }
        
        
@@ -55,7 +52,6 @@
 
             // merge the user cart to localstorage
             const data = await res.json()
-            console.log(data)
         }
 
         // If user is not logged in
