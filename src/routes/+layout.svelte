@@ -10,11 +10,13 @@
     Userfront.init(PUBLIC_USERFRONT_ACCOUNT_ID);
 
     const { user } = Userfront;
-    console.log(user);
+    console.log(user.userUuid);
 
     let cartCount = 0;
     let cartItems = [];
     let loadingCart = false;
+
+
 
     // Initialize the value of cart store from local storage
     onMount(async () => {

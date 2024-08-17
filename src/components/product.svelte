@@ -64,17 +64,21 @@
         else{ 
             addedToCart = removeFromCart(id)
 
+            console.log("removed from state and removing from database")
+
             // if the user is logged in, remove the product to database as well
             if(user.email){
-                console.log('hello')
+                console.log(" email found ")
+               
                 const cartRes = await fetch('api/cart', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({'ids':id, 'user_id': user.userUuid, 'operation':'remove'}),
+                    body: JSON.stringify({'ids':[id], 'user_id': user.userUuid, 'operation':'remove'}),
                 })
 
+                console.log("got response : ",await cartRes.json())
             }
 
             if(!addedToCart){

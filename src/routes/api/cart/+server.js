@@ -1,56 +1,66 @@
-import connect from '$lib/connection'
-import Cart from '$lib/models/Cart'
+import connect from '$lib/connection';
+import Cart from '$lib/models/Cart';
 
 export async function POST({ request }) {
     try {
-        const data = await request.json()
-        const ids = data.ids
-        const user_id = data.user_id
-        const operation = data.operation
-        
-        await connect()
+        const data = await request.json();
+        const ids = data.ids;  // Make sure `ids` is an array
+       
+        const user_id = data.user_id;
+        const operation = data.operation;
 
-        const userCartRes = await Cart.findOne({ user_id })
-        
-        let updatedCart
-        console.log(ids)
-        
+        await connect();
 
+        const userCartRes = await Cart.findOne({ user_id });
+
+        let updatedCart;
+
+        // If operation is 'remove', filter out the items
         if (operation === 'remove') {
-            const updatedCart = userCartRes.cart_items.filter( item=> item !== ids)
-            updatedCart = await Cart.updateOne({ user_id, cart_items: updatedCart })
-            
-        }
-        // Addition
+
+            console.log(userCartRes.cart_items)
+
+            const filteredCartItems = userCartRes.cart_items.filter(item => !ids.includes(item));
+            console.log("ids to be removed : ", ids)
+            console.log("before: ", userCartRes.cart_items)
+            console.log("after : ", filteredCartItems)
+
+            updatedCart = await Cart.updateOne(
+                { user_id },
+                { $set: { cart_items: filteredCartItems } }
+            );
+        } 
+        // If operation is 'add', merge the new items with the existing items
         else {
-            const mergedCart = [...new Set([...ids, ...userCartRes.cart_items])];
-            updatedCart = await Cart.updateOne({ user_id, cart_items: mergedCart })
+            const mergedCart = [...new Set([...userCartRes.cart_items, ...ids])];
+            updatedCart = await Cart.updateOne(
+                { user_id },
+                { $set: { cart_items: mergedCart } }
+            );
         }
 
-        
         return new Response(JSON.stringify(
-            { success: true,  updatedCart}
-        ))
+            { success: true, updatedCart }
+        ));
     }
     catch (e) {
         return new Response(JSON.stringify(
             { status: 401, message: e.message }
-        ))
+        ));
     }
 }
 
-
 export async function GET({ url }) {
-
-    const user_id = url.searchParams.get('user_id')
+    const user_id = url.searchParams.get('user_id');
 
     try {
-        
-        await connect()
+        await connect();
 
-        const userCartRes = await Cart.findOne({ user_id })
+        const userCartRes = await Cart.findOne({ user_id });
 
-        if(!userCartRes) return new Response(JSON.stringify([]));
+        if (!userCartRes) {
+            return new Response(JSON.stringify([]));
+        }
 
         return new Response(JSON.stringify(userCartRes.cart_items));
     } catch (error) {
@@ -63,8 +73,3 @@ export async function GET({ url }) {
         });
     }
 }
-
-
-
-
-
