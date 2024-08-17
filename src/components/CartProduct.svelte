@@ -2,14 +2,10 @@
     import Quantity from "./Quantity.svelte";
     import removeFromCart from '../utils/removeFromCart.js';
     import { createEventDispatcher } from "svelte";
-    import { PUBLIC_USERFRONT_ACCOUNT_ID } from '$env/static/public';
-    import Userfront from '@userfront/toolkit/web-components';
-    Userfront.init(PUBLIC_USERFRONT_ACCOUNT_ID);
-
-    const { user } = Userfront;
 
     export let book;
 
+    const { user } = Userfront;
     const dispatch = createEventDispatcher();
     let currentQuantity = book.quantity;
 
@@ -23,7 +19,6 @@
         } else if (type === 'decrement' && currentQuantity > 1) {
             currentQuantity--;
         }
-
         dispatch('changeQty', { bookId: book.id, newQuantity: currentQuantity });
     }
 
@@ -31,9 +26,8 @@
     async function handleRemove() {
         removeFromCart(book.id);
 
-         // if the user is logged in, remove the product to database as well
+         // if the user is logged in, remove the product from database as well
         if(user.email){
-            console.log(" email found ")
             
             const cartRes = await fetch('api/cart', {
                 method: 'POST',
@@ -42,11 +36,7 @@
                 },
                 body: JSON.stringify({'ids':[book.id], 'user_id': user.userUuid, 'operation':'remove'}),
             })
-
-            console.log("got response : ",await cartRes.json())
         }
-
-        
 
         dispatch('changeQty', { bookId: book.id, newQuantity: 0 });
     }

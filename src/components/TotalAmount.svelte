@@ -54,7 +54,6 @@
             })
 
             // merge the user cart to localstorage
-
             const data = await res.json()
             console.log(data)
         }

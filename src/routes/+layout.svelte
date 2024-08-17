@@ -10,7 +10,8 @@
     Userfront.init(PUBLIC_USERFRONT_ACCOUNT_ID);
 
     const { user } = Userfront;
-    console.log(user.userUuid);
+    
+
 
     let cartCount = 0;
     let cartItems = [];
@@ -18,8 +19,9 @@
 
 
 
-    // Initialize the value of cart store from local storage
     onMount(async () => {
+
+        // Get the products from localStorage 
         const prevLocalCart = localStorage.getItem('cart');
         let localCartArr;
 
@@ -30,16 +32,17 @@
         }
 
         const localCartSet = new Set(localCartArr);
+       
 
-        // If the user is logged in, get their cart items from the server
+        // If the user is logged in, get the products from database and merge them with localStorage
         if (user.email) {
             loadingCart = true;
-            await fetchCartItemsFromAPI(localCartSet);
+            await serverToLocalCart(localCartSet);
             loadingCart = false;
         }
 
+        // Initialize the cart store with the products in localStorage (and Backend)
         cart.set(localCartSet);
-        console.log("cart store is set to: ", $cart);
 
         // Subscribe to cart updates
         cart.subscribe(value => {
@@ -48,8 +51,8 @@
         });
     });
 
-    // Async function to fetch cart items from API
-    async function fetchCartItemsFromAPI(localCartSet) {
+    // function to merge server cart with local storage cart
+    async function serverToLocalCart(localCartSet) {
         try {
             const response = await fetch(`api/cart?user_id=${user.userUuid}`);
             const data = await response.json();
@@ -62,6 +65,8 @@
         }
     }
 </script>
+
+
 
 <!-- NAVBAR SECTION -->
 <header class="flex items-center justify-between p-4 bg-white shadow-md fixed top-0 left-0 right-0 z-50">

@@ -10,10 +10,9 @@
     import Userfront from '@userfront/toolkit/web-components';
     Userfront.init(PUBLIC_USERFRONT_ACCOUNT_ID);
 
-    const { user } = Userfront;
-
 	export let book
 
+    const { user } = Userfront;
     let addedToCart
     const dispatch = createEventDispatcher()
 
@@ -31,13 +30,12 @@
     })
 
 
-    async function cartOperation(id){
+    // functio to add or remove product from cart
+    async function updateCart(id){
 
         // Add product to cart
         if (!addedToCart){ 
             addedToCart = addToCart(id)
-
-            console.log(user.email)
 
             // if the user is logged in, add the product to database as well
             if(user.email){
@@ -46,17 +44,14 @@
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                    },
-                    
+                    },   
                     body: JSON.stringify({'ids':[id], 'user_id': user.userUuid}),
                 })
-
             }
             if(addedToCart){
-               
                 dispatch('add', {"message": "added to cart", 'status':true})
             }else{
-                dispatch('added', {"message": "Couldn't add to the cart", "status": false})     
+                dispatch('add', {"message": "Couldn't add to the cart", "status": false})     
             }
         }
 
@@ -64,12 +59,8 @@
         else{ 
             addedToCart = removeFromCart(id)
 
-            console.log("removed from state and removing from database")
-
-            // if the user is logged in, remove the product to database as well
+            // if the user is logged in, remove the product from database as well
             if(user.email){
-                console.log(" email found ")
-               
                 const cartRes = await fetch('api/cart', {
                     method: 'POST',
                     headers: {
@@ -77,17 +68,14 @@
                     },
                     body: JSON.stringify({'ids':[id], 'user_id': user.userUuid, 'operation':'remove'}),
                 })
-
-                console.log("got response : ",await cartRes.json())
             }
 
-            if(!addedToCart){
-                dispatch('remove', {"message": "removed from cart", 'status':true})     
+            if(addedToCart && !cartRes.ok){
+                dispatch('remove', {"message": "Couldn't remove from the cart", 'status':false})  
             }else{
-                dispatch('remove', {"message": "Couldn't remove from the cart", 'status':false})       
+                dispatch('remove', {"message": "removed from cart", 'status':true})       
             }
         }
-        console.log($cart)
     }
 
   
@@ -112,7 +100,7 @@
 
        <!-- ADD TO CART BUTTON -->
        <div class="w-full text-center border-t  ">
-            <button on:click={()=>cartOperation(book.id)} class=" text-sm font-semibold text-orange-600 hover:text-orange-500 active:orange-400">
+            <button on:click={()=>updateCart(book.id)} class=" text-sm font-semibold text-orange-600 hover:text-orange-500 active:orange-400">
                 {#if addedToCart}
                     Remove
                 {:else}

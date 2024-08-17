@@ -5,27 +5,25 @@
     import TotalAmount from "../../components/TotalAmount.svelte";
 
 
-    // userfront
-    import { PUBLIC_USERFRONT_ACCOUNT_ID } from '$env/static/public';
-    import Userfront from '@userfront/toolkit/web-components';
-    Userfront.init(PUBLIC_USERFRONT_ACCOUNT_ID);
+    // // userfront
+    // import { PUBLIC_USERFRONT_ACCOUNT_ID } from '$env/static/public';
+    // import Userfront from '@userfront/toolkit/web-components';
+    // Userfront.init(PUBLIC_USERFRONT_ACCOUNT_ID);
 
     const { user } = Userfront;
-
     let totalMRP = 0;
     let itemCount = 0;
     let cartBooks = [];
 
-    // Load book for the IDs in cart and calculate the total amount
+    // Load book calculate the total amount initially
     async function getBookFromCart() {
         let ids = Array.from($cart);
 
-        // if the user is logged in, also get the user's cart items
+        // if the user is logged in, also get the database's cart items
         if (user.email) {
             try {
                 const response = await fetch(`/api/cart?user_id=${user.userUuid}`);
                 const userCartRes = await response.json();
-                console.log("user cart:", userCartRes);
 
                 ids = [...ids, ...userCartRes]; // Merge the arrays
             } catch (error) {
@@ -41,23 +39,20 @@
             const book = books.find(b => b.id === id);
             return { ...book, quantity: 1 }; // default quantity is 1
         });
-
         calculateTotal(); // Calculate the total amount after updating cartBooks
     }
 
 
-    // Function to calculate the total price 
+    // Function to calculate the total price of products according to their qunatities
     function calculateTotal() {
         totalMRP = 0;
-
-        console.log("cart books:", cartBooks);
         cartBooks.forEach(book => {
             totalMRP += book.price * book.quantity;
         });
-
         itemCount = cartBooks.length; // Update item count
     }
 
+    // If qty of a product changes, update the total price
     function updateTotalMRP(event) {
         const { bookId, newQuantity } = event.detail;
         const book = cartBooks.find(book => book.id === bookId);
@@ -70,14 +65,13 @@
                 cartBooks = cartBooks.filter(b => b.id !== bookId);
             }
         }
-
         calculateTotal();
     }
 
     // Use the reactive statement to call getBookFromCart when the cart changes
     $: {
         console.log($cart);
-        getBookFromCart(); // Now this will correctly populate cartBooks
+        getBookFromCart(); 
     }
 </script>
 

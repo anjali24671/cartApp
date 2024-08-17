@@ -6,7 +6,7 @@
     let showSucess = false
     let showFailure = false
 
-    // shows green div when item is added to cart
+    // shows green div when product is added to cart
     function showCartSuccess(detail){
         showSucess = true
 
@@ -15,7 +15,7 @@
         }, 1000)
     }
 
-    // shows red div when item is removed from cart
+    // shows red div when product is removed from cart
     function showCartFailure(detail){
         showFailure = true 
 
@@ -34,7 +34,7 @@
 
 </script>
 
-<!-- APPEARS WHEN ITEMS ARE ADDED OR REMOVED FROM CART -->
+<!-- APPEARS WHEN PRODUCTS ARE ADDED OR REMOVED FROM CART -->
 <div class="flex w-full relative items-center justify-center">
     {#if showSucess}
         <div class="p-3 rounded-xl bg-green-400  fixed  bottom-[20px]" transition:fade>
