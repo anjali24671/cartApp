@@ -19,6 +19,7 @@ function removeFromCart(id) {
             localStorage.setItem('cart', JSON.stringify(Array.from(cartItemSet)))
 
         }
+        console.log("hello")
 
         return false;
 
